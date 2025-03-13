@@ -4,6 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 dotenv.config();
 import ConnectDB from './Utils/db.js';
+import userRoute from './Routes/userRoute.js'
 
 
 const app = express();
@@ -23,6 +24,9 @@ app.use(cors(corsOption))
 //         message:"App Running from backend server"
 //     })
 // })
+
+
+app.use('/api/user', userRoute);
 
 
 const PORT = process.env.PORT || 5001

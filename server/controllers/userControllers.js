@@ -46,13 +46,15 @@ export const Login = async (req, res) => {
         success: false,
       });
     }
-    const user = await User.findOne({ email });
+    let user = await User.findOne({ email });
+
     if (!user) {
       return res.status(400).json({
         message: "Incorrect Email or Password",
         success: false,
       });
     }
+
     const isPassMatch = await bcrypt.compare(password, user.password);
     if (!isPassMatch) {
       return res.status(400).json({
@@ -116,14 +118,12 @@ export const Logout = async (req, res) => {
 export const UpdateProfile = async (req, res) => {
   try {
     const { name, email, phoneNumber, bio, skills } = req.body;
-    if (!name || !email || !phoneNumber || !bio || !skills) {
-      return res.status(400).json({
-        message: "All fields Are required",
-        success: false,
-      });
+
+    let skillsArray;
+    if (skills) {
+      skillsArray = skills.split(",");
     }
 
-    const skillsArray = skills.split(",");
     const userId = req.id;
     let user = await User.findById(userId);
     if (!user) {
@@ -133,30 +133,30 @@ export const UpdateProfile = async (req, res) => {
       });
     }
     // Updating Data
-    (user.name = name),
-      (user.email = email),
-      (user.phoneNumber = phoneNumber),
-      (user.profile.bio = bio),
-      (user.profile.skills = skillsArray);
+    if (name) user.name = name;
+    if (email) user.email = email;
+    if (phoneNumber) user.phoneNumber = phoneNumber;
+    if (bio) user.profile.bio = bio;
+    if (skills) user.profile.skills = skillsArray;
 
     // Resume comes Leter Here
 
     await user.save();
 
     user = {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        phoneNumber: user.phoneNumber,
-        role: user.role,
-        profile: user.profile,
-      };
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      role: user.role,
+      profile: user.profile,
+    };
 
     return res.status(200).json({
-        message: "Profile Update Successfully",
-        user,
-        success: true
-    })
+      message: "Profile Update Successfully",
+      user,
+      success: true,
+    });
   } catch (error) {
     console.log(error);
   }
