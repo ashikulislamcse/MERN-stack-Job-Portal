@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+import { USER_API_END_POINT } from "../../../../Utils/constant.js";
+import { toast } from "sonner";
 const Login = () => {
   const [input, setInput] = useState({
     email: "",
@@ -7,13 +10,27 @@ const Login = () => {
     role: "",
   });
 
+  const navigate = useNavigate();
+
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    console.log(input);
+    try {
+      const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
+      if (res.data.success) {
+        navigate("/");
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message);
+    }
   };
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-400 to-purple-500 p-4">
@@ -77,7 +94,9 @@ const Login = () => {
 
             <label
               className={`flex items-center p-2 rounded-md cursor-pointer border ${
-                input.role === "recruiter" ? "border-blue-500" : "border-gray-300"
+                input.role === "recruiter"
+                  ? "border-blue-500"
+                  : "border-gray-300"
               }`}
             >
               <input

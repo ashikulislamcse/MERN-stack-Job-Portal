@@ -2,7 +2,10 @@ import { Camera } from "lucide-react";
 import React, { useState } from "react";
 import { Label } from "../../label";
 import { Input } from "../../input";
-
+import axios from "axios";
+import { USER_API_END_POINT } from "../../../../Utils/constant.js";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 const Register = () => {
   const [input, setInput] = useState({
     name: "",
@@ -13,6 +16,8 @@ const Register = () => {
     file: "",
   });
 
+  const navigate = useNavigate();
+
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
@@ -21,13 +26,37 @@ const Register = () => {
     setInput({ ...input, file: e.target.files?.[0] });
   };
 
-  const onSubmitHandler =async(e)=>{
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
-    console.log(input)
-  }
+    const formData = new FormData();
+    formData.append("name", input.name);
+    formData.append("email", input.email);
+    formData.append("phoneNumber", input.phoneNumber);
+    formData.append("password", input.password);
+    formData.append("role", input.role);
+    if (input.file) {
+      formData.append("file", input.file);
+    }
+    try {
+      const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
+        headers: { 'Content-Type': "multipart/form-data" },
+                withCredentials: true,
+      });
+      if (res.data.success) {
+        navigate("/login");
+        toast.success(res.data.message);
+    }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message);
+    }
+  };
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-400 to-purple-500 p-4">
-      <form onSubmit={onSubmitHandler} className="bg-white p-6 rounded-lg shadow-lg w-full max-w-xs sm:max-w-md">
+      <form
+        onSubmit={onSubmitHandler}
+        className="bg-white p-6 rounded-lg shadow-lg w-full max-w-xs sm:max-w-md"
+      >
         <h1 className="font-bold text-lg mb-4 text-center text-gray-800">
           Create Account
         </h1>
@@ -143,7 +172,10 @@ const Register = () => {
           />
         </div>
 
-        <button type="submit" className="w-full mt-4 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition cursor-pointer">
+        <button
+          type="submit"
+          className="w-full mt-4 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition cursor-pointer"
+        >
           Register
         </button>
       </form>
