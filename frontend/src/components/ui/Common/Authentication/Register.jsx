@@ -1,4 +1,4 @@
-import { Camera } from "lucide-react";
+import { Camera, Loader2 } from "lucide-react";
 import React, { useState } from "react";
 import { Label } from "../../label";
 import { Input } from "../../input";
@@ -6,6 +6,9 @@ import axios from "axios";
 import { USER_API_END_POINT } from "../../../../Utils/constant.js";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "../../../../Redux/authSlice.js";
+import { Button } from "../../button.jsx";
 const Register = () => {
   const [input, setInput] = useState({
     name: "",
@@ -16,6 +19,8 @@ const Register = () => {
     file: "",
   });
 
+  const {loading} = useSelector(store => store.auth);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const changeEventHandler = (e) => {
@@ -38,6 +43,7 @@ const Register = () => {
       formData.append("file", input.file);
     }
     try {
+      dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
         headers: { 'Content-Type': "multipart/form-data" },
                 withCredentials: true,
@@ -49,6 +55,8 @@ const Register = () => {
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message);
+    } finally{
+      dispatch(setLoading(false));
     }
   };
   return (
@@ -172,12 +180,19 @@ const Register = () => {
           />
         </div>
 
-        <button
-          type="submit"
-          className="w-full mt-4 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition cursor-pointer"
-        >
-          Register
-        </button>
+        {loading ? (
+          <Button className='w-full my-4'>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Please Wait..
+          </Button>
+        ) : (
+          <button
+            type="submit"
+            className="w-full mt-4 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition cursor-pointer"
+          >
+            Register
+          </button>
+        )}
       </form>
     </div>
   );

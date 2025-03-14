@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
 import { USER_API_END_POINT } from "../../../../Utils/constant.js";
 import { toast } from "sonner";
+import { useDispatch, useSelector } from "react-redux";
+import { Button } from "../../button.jsx";
+import { Loader2 } from "lucide-react";
+import { setLoading } from "../../../../Redux/authSlice.js";
+
 const Login = () => {
   const [input, setInput] = useState({
     email: "",
@@ -11,6 +16,8 @@ const Login = () => {
   });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { loading } = useSelector((store) => store.auth);
 
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -19,6 +26,7 @@ const Login = () => {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
+      dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
@@ -30,6 +38,8 @@ const Login = () => {
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message);
+    } finally {
+      dispatch(setLoading(false));
     }
   };
   return (
@@ -113,12 +123,19 @@ const Login = () => {
         </div>
 
         {/* Submit Button */}
-        <button
-          type="submit"
-          className="w-full mt-4 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition cursor-pointer"
-        >
-          Login
-        </button>
+        {loading ? (
+          <Button className='w-full my-4'>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Please Wait..
+          </Button>
+        ) : (
+          <button
+            type="submit"
+            className="w-full mt-4 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition cursor-pointer"
+          >
+            Login
+          </button>
+        )}
       </form>
     </div>
   );
