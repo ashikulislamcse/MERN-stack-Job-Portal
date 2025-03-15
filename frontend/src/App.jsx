@@ -9,6 +9,10 @@ import Jobs from "./Pages/Jobs";
 import Browse from "./Pages/Browse";
 import Profile from "./Pages/Profile";
 import JobDescription from "./components/JobDescription";
+import Companies from "./components/Admin/Companies";
+import CompaniesCreate from "./components/Admin/CompaniesCreate";
+import CompaniesSetup from "./components/Admin/CompaniesSetup";
+
 const App = () => {
   return (
     <div>
@@ -22,6 +26,11 @@ const App = () => {
           <Route path="/browse" element={<Browse />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/description/:id" element={<JobDescription />} />
+
+          {/* Admin Path */}
+          <Route path="/admin/companies" element={<Companies/>}/>
+          <Route path="/admin/companies/create" element={<CompaniesCreate/>}/>
+          <Route path="/admin/companies/:id" element={<CompaniesSetup />} />
 
         </Routes>
       </BrowserRouter>

@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import authSlice from "./authSlice.js";
 import jobSlice from "./jobSlice.js";
+import companySlice from './companySlice.js'
 
 import {
   persistStore,
@@ -18,13 +19,14 @@ const persistConfig = {
     key: "root",
     version: 1,
     storage,
-    whitelist: ["auth"],  // শুধু auth persist হবে
+    whitelist: ["auth"],
   };
   
 
 const rootReducer = combineReducers({
     auth:authSlice,
     job:jobSlice,
+    company: companySlice,
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

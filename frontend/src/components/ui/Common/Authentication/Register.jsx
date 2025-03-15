@@ -19,12 +19,16 @@ const Register = () => {
     file: "",
   });
 
-  const {loading} = useSelector(store => store.auth);
+  const { loading } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const changeEventHandler = (e) => {
-    setInput({ ...input, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setInput({
+      ...input,
+      [name]: name === "role" ? value.toLowerCase() : value,
+    });
   };
 
   const changeFileHandler = (e) => {
@@ -45,17 +49,17 @@ const Register = () => {
     try {
       dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
-        headers: { 'Content-Type': "multipart/form-data" },
-                withCredentials: true,
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
       });
       if (res.data.success) {
         navigate("/login");
         toast.success(res.data.message);
-    }
+      }
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message);
-    } finally{
+    } finally {
       dispatch(setLoading(false));
     }
   };
@@ -181,7 +185,7 @@ const Register = () => {
         </div>
 
         {loading ? (
-          <Button className='w-full my-4'>
+          <Button className="w-full my-4">
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             Please Wait..
           </Button>
