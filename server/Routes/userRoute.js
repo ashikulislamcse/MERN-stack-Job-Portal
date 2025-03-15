@@ -9,7 +9,7 @@ const Router = express.Router();
 Router.post('/register',singleUpload, Register);
 Router.post('/login', Login);
 Router.post('/logout', Logout);
-Router.post('/profile/update',isAuthenticated, UpdateProfile);
+Router.post('/profile/update',singleUpload,isAuthenticated, UpdateProfile);
 
 
 export default Router;
