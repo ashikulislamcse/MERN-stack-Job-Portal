@@ -1,7 +1,7 @@
 import React from 'react'
-import HeroSection from '../components/ui/HeroSection'
 import CategoryCarousel from '../components/CategoryCarusel'
 import LatestJobs from '../components/LatestJobs'
+import HeroSection from '../components/HeroSection'
 
 const Home = () => {
   return (
@@ -9,7 +9,6 @@ const Home = () => {
       <HeroSection/>
       <CategoryCarousel/>
       <LatestJobs/>
-      {/* <Footer/> */}
     </div>
   )
 }
