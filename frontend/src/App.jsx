@@ -7,6 +7,8 @@ import Register from "./components/ui/Common/Authentication/Register";
 import Footer from "./components/ui/Common/Footer";
 import Jobs from "./Pages/Jobs";
 import Browse from "./Pages/Browse";
+import Profile from "./Pages/Profile";
+import JobDescription from "./components/JobDescription";
 const App = () => {
   return (
     <div>
@@ -18,6 +20,9 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/jobs" element={<Jobs />} />
           <Route path="/browse" element={<Browse />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/description/:id" element={<JobDescription />} />
+
         </Routes>
       </BrowserRouter>
       <Footer/>
