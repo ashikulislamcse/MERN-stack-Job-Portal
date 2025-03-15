@@ -14,6 +14,10 @@ export const Register = async (req, res) => {
       });
     }
 
+    const file = req.file;
+    const fileUri = getDataUri(file);
+    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+
     const user = await User.findOne({ email });
     if (user) {
       return res.status(404).json({
@@ -29,6 +33,9 @@ export const Register = async (req, res) => {
       phoneNumber,
       password: hashPassword,
       role,
+      profile:{
+        profilePhoto:cloudResponse.secure_url,
+      }
     });
     return res.status(200).json({
       message: "User Created Successfully",
