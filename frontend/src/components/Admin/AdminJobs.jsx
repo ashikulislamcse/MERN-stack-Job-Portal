@@ -26,7 +26,7 @@ const AdminJobs = () => {
           />
           <Button
             className="cursor-pointer"
-            onClick={() => navigate("/admin/companies/create")}
+            onClick={() => navigate("/admin/jobs/create")}
           >
             Create Jobs
           </Button>

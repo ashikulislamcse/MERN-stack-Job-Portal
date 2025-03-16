@@ -7,6 +7,7 @@ import { Badge } from '../components/ui/badge';
 import AppliedJobTable from '../components/AppliedJobTable';
 import UpdateProfileDialog from '../components/UpdateProfileDialog';
 import { useSelector } from 'react-redux';
+import useGetAppliedJobs from '../hooks/useGetAppliedJobs';
 
 
 
@@ -15,6 +16,7 @@ import { useSelector } from 'react-redux';
 const isResume = true;
 
 const Profile = () => {
+    useGetAppliedJobs();
     const [open, setOpen] = useState(false);
     const {user} = useSelector(store=>store.auth);
 
