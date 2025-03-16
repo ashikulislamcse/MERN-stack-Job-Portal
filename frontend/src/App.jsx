@@ -15,6 +15,7 @@ import CompaniesSetup from "./components/Admin/CompaniesSetup";
 import AdminJobs from "./components/Admin/AdminJobs";
 import PostJob from "./components/Admin/PostJob";
 import Applicants from "./components/Admin/applicants";
+import ProtectedRoute from "./components/Admin/ProtectedRoute";
 
 const App = () => {
   return (
@@ -31,16 +32,57 @@ const App = () => {
           <Route path="/description/:id" element={<JobDescription />} />
 
           {/* Admin Path */}
-          <Route path="/admin/companies" element={<Companies/>}/>
-          <Route path="/admin/companies/create" element={<CompaniesCreate/>}/>
-          <Route path="/admin/companies/:id" element={<CompaniesSetup />} />
-          <Route path="/admin/jobs" element={<AdminJobs />} />
-          <Route path="/admin/jobs/create" element={<PostJob />} />
-          <Route path="/admin/jobs/:id/applicants" element={<Applicants />} />
-
+          <Route
+            path="/admin/companies"
+            element={
+              <ProtectedRoute>
+                <Companies />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/companies/create"
+            element={
+              <ProtectedRoute>
+                <CompaniesCreate />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/companies/:id"
+            element={
+              <ProtectedRoute>
+                <CompaniesSetup />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/jobs"
+            element={
+              <ProtectedRoute>
+                <AdminJobs />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/jobs/create"
+            element={
+              <ProtectedRoute>
+                <PostJob />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/jobs/:id/applicants"
+            element={
+              <ProtectedRoute>
+                <Applicants />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
-      <Footer/>
+      <Footer />
     </div>
   );
 };
