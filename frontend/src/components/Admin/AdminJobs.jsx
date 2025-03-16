@@ -2,18 +2,18 @@ import React, { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
-import CompaniesTable from "./CompaniesTablse";
-import useGetAllCompanies from "../../hooks/useGetAllCompanies";
 import { useDispatch } from "react-redux";
-import { setSearchCompanyByText } from "../../Redux/companySlice";
+import AdminJobsTable from "./AdminJobsTable";
+import useGetAllAdminJobs from "../../hooks/useGetAllAdminJobs";
+import { setSearchJobByText } from "../../Redux/jobSlice";
 
-const Companies = () => {
-  useGetAllCompanies();
+const AdminJobs = () => {
+  useGetAllAdminJobs();
   const navigate = useNavigate();
   const [input, setInput] = useState("");
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(setSearchCompanyByText(input));
+    dispatch(setSearchJobByText(input));
   }, [input]);
   return (
     <div>
@@ -28,13 +28,13 @@ const Companies = () => {
             className="cursor-pointer"
             onClick={() => navigate("/admin/companies/create")}
           >
-            Create Company
+            Create Jobs
           </Button>
         </div>
-        <CompaniesTable />
+        <AdminJobsTable />
       </div>
     </div>
   );
 };
 
-export default Companies;
+export default AdminJobs;
