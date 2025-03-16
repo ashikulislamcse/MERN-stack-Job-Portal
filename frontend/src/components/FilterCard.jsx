@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Label } from './ui/label'
-import {RadioGroup, RadioGroupItem} from '@radix-ui/react-radio-group'
+import { useDispatch } from 'react-redux'
+import { setSearchedQuery } from '../Redux/jobSlice'
+import { RadioGroup, RadioGroupItem } from './ui/radio-group'
 
 const fitlerData = [
     {
@@ -18,7 +20,7 @@ const fitlerData = [
 ]
 
 const FilterCard = () => {
-
+    
     return (
         <div className='w-full bg-white p-3 rounded-md'>
             <h1 className='font-bold text-lg'>Filter Jobs</h1>
@@ -48,4 +50,3 @@ const FilterCard = () => {
 }
 
 export default FilterCard
-
